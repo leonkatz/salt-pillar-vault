@@ -3,7 +3,7 @@ Saltstack external pillar for Hashicorp Vault with flexible minion targeting
 
 Requirements
 ------------
-* `hvac` python module (>= v0.2.16)
+* `hvac` python module (>= v0.2.17)
 
 
 Example Configuration
