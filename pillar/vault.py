@@ -237,13 +237,17 @@ def ext_pillar(minion_id, pillar, *args, **kwargs):
             for variable, location in secrets.items():
               return_data = couple(location,conn)
               if return_data:
+                  if '/' in variable:
                     leading_str = ''
                     trailing_str = ''
-                    for i in variable.split('/')[:-1]:
-                        leading_str = leading_str+"{\"" + i + "\" : "
+                    for i in variable.split('/')[1:]:
+                        leading_str=leading_str+"{\"" + i + "\" : "
                         trailing_str = trailing_str + "}"
                     comp_str = eval(leading_str + str(return_data['data']) + trailing_str)
+                    variable = variable.split('/', 1)[0]
                     vault_pillar[variable] = comp_str
+                  else:
+                    vault_pillar[variable] = return_data['data']
 
 
     return vault_pillar
