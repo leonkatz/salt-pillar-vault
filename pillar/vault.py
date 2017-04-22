@@ -194,7 +194,17 @@ def couple(location, conn):
     if coupled_data or not CONF["unset_if_missing"]:
         return coupled_data
 
-
+def merge(dict_a, dict_b):
+    if dict_a.keys()[0] == dict_b.keys()[0]:
+        temp_val = dict_a.keys()[0]
+        print(temp_val)
+        dict_a[temp_val] = merge(dict_a[temp_val], dict_b[temp_val])
+    else:
+        print(dict_a)
+        print(dict_b)
+        dict_a.update(dict_b)
+        print(dict_a)
+    return dict_a
 
 def ext_pillar(minion_id, pillar, *args, **kwargs):
     """ Main handler. Compile pillar data for the specified minion ID
@@ -245,9 +255,10 @@ def ext_pillar(minion_id, pillar, *args, **kwargs):
                         trailing_str = trailing_str + "}"
                     comp_str = eval(leading_str + str(return_data['data']) + trailing_str)
                     variable = variable.split('/', 1)[0]
-                    vault_pillar[variable] = comp_str
+                    if variable in vault_pillar:
+                          vault_pillar[variable]=merge(vault_pillar[variable],comp_str)
+                      else:
+                          vault_pillar[variable] = comp_str
                   else:
                     vault_pillar[variable] = return_data['data']
-
-
     return vault_pillar
