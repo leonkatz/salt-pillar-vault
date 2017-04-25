@@ -195,15 +195,13 @@ def couple(location, conn):
         return coupled_data
 
 def merge(dict_a, dict_b):
+    """ Merge dictionary needed for managing vault.conf
+    """
     if dict_a.keys()[0] == dict_b.keys()[0]:
         temp_val = dict_a.keys()[0]
-        print(temp_val)
         dict_a[temp_val] = merge(dict_a[temp_val], dict_b[temp_val])
     else:
-        print(dict_a)
-        print(dict_b)
         dict_a.update(dict_b)
-        print(dict_a)
     return dict_a
 
 def ext_pillar(minion_id, pillar, *args, **kwargs):
